@@ -16,6 +16,23 @@ const Home=()=>
         console.log(result.data);
         getUsers(result.data.reverse());
     }
+    const deleteUser=async(id)=>
+    {
+        var msg=window.confirm("Are you sure want to delete ?");
+        if(msg)
+        {
+            const result=await axios.delete(`http://localhost:3001/users/${id}`);
+            console.log(result.data);
+            if(result.status==200)
+            {
+                getUserData();
+            }
+            else
+            {
+                alert("Error In API");
+            }
+        }
+    }
     return (
     <div className="container">
         <div className="py-4"> 
@@ -40,9 +57,9 @@ const Home=()=>
                                 <td>{user.username}</td>
                                 <td>{user.email}</td>
                                 <td>
-                                    <Link className="btn btn-primary m-2" to="/" >View</Link>
-                                    <Link className="btn btn-info m-2" to="/edit" >Edit</Link>
-                                    <Link className="btn btn-danger m-2" to="/delete" >Delete</Link>    
+                                    <Link className="btn btn-primary m-2" to={`/users/view/${user.id}`} >View</Link>
+                                    <Link className="btn btn-info m-2" to={`/users/edit/${user.id}`} >Edit</Link>
+                                    <Link className="btn btn-danger m-2" to="#" onClick={()=>deleteUser(user.id)} >Delete</Link>    
                                 </td>
                             </tr>
                         ))
